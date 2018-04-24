@@ -12,7 +12,7 @@ const path         = require('path');
 const session    = require("express-session");
 const MongoStore = require('connect-mongo')(session);
 const flash      = require("connect-flash");
-    
+
 
 mongoose.Promise = Promise;
 mongoose
@@ -41,7 +41,7 @@ app.use(require('node-sass-middleware')({
   dest: path.join(__dirname, 'public'),
   sourceMap: true
 }));
-      
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -58,10 +58,11 @@ hbs.registerHelper('ifUndefined', (value, options) => {
       return options.fn(this);
   }
 });
-  
+
 
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
+app.locals.mapKey = process.env.google_maps_key;
 
 
 // Enable authentication using session + passport
@@ -73,13 +74,13 @@ app.use(session({
 }))
 app.use(flash());
 require('./passport')(app);
-    
+
 
 const index = require('./routes/index');
 app.use('/', index);
 
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
-      
+
 
 module.exports = app;
